@@ -6,6 +6,8 @@ import 'package:fikra_app/constant.dart';
 import 'package:fikra_app/widgets/customTextFiled.dart';
 import 'package:fikra_app/screens/forgetpassword.dart';
 import 'package:fikra_app/screens/enter.dart';
+import 'package:fikra_app/screens/userhome.dart';
+import 'package:fikra_app/screens/vendorhome.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'LoginScreen';
@@ -17,6 +19,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   bool _passwordVisible = false;
+  bool _isVendor = false;
+  bool _isUser = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: kMainColor,
       appBar: AppBar(
-        backgroundColor: kMainColor,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushNamed(context, FirstScreen.id);
-          },
-        ),
-      ),
+          backgroundColor: kMainColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.grey,
+            onPressed: () {
+              Navigator.pushNamed(context, FirstScreen.id);
+            },
+          )),
       body: Form(
         key: _globalKey,
         child: ListView(
@@ -114,25 +118,77 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: height * .05,
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Checkbox(
+                  value: _isVendor,
+                  onChanged: (value) {
+                    setState(() {
+                      _isVendor = value!;
+                      if (_isVendor) {
+                        _isUser = false;
+                      }
+                    });
+                  },
+                ),
+                Text(
+                  ' vendor',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                SizedBox(width: 20),
+                Checkbox(
+                  value: _isUser,
+                  onChanged: (value) {
+                    setState(() {
+                      _isUser = value!;
+                      if (_isUser) {
+                        _isVendor = false;
+                      }
+                    });
+                  },
+                ),
+                Text(
+                  ' user',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+            SizedBox(height: height * .02),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 120),
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+              child: Builder(
+                builder: (context) => TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.black,
+                    ),
                   ),
-                  backgroundColor: Colors.black,
-                ),
-                onPressed: () {
-                  if (_globalKey.currentState!.validate()) {
-                    // Perform login logic
-                  } else {
-                    //Navigator.pushNamed(context, homevend.id);
-                  }
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  onPressed: () {
+                    if (_globalKey.currentState!.validate()) {
+                      if (_isVendor) {
+                        Navigator.pushNamed(context, ShopByCategoriesPage.id);
+                      } else if (_isUser) {
+                        Navigator.pushNamed(context, UserHome.id);
+                      } else {
+                        // Show error message if no option is selected
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please select an option'),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
                 ),
               ),
             ),
@@ -152,7 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: const Text(
                     '   Signup',
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
               ],
@@ -173,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: const Text(
                     'Reset',
-                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
               ],
