@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fikra_app/screens/login_screen.dart';
 import 'package:fikra_app/constant.dart';
 import 'package:fikra_app/widgets/customTextFiled.dart';
+import 'package:fikra_app/screens/enter.dart';
 
 class SignupScreen extends StatefulWidget {
   static String id = 'SignupScreen';
@@ -17,8 +18,6 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _confirmPasswordVisible = false;
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
-  bool _isVendor = false;
-  bool _isUser = false;
 
   @override
   void dispose() {
@@ -32,6 +31,15 @@ class _SignupScreenState extends State<SignupScreen> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: kMainColor,
+      appBar: AppBar(
+          backgroundColor: kMainColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            color: Colors.grey,
+            onPressed: () {
+              Navigator.pushNamed(context, FirstScreen.id);
+            },
+          )),
       body: Form(
         key: _globalKey,
         child: ListView(
@@ -158,8 +166,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     borderSide: BorderSide(color: Colors.white),
                   ),
                   hintText: 'Confirm password',
-                  hintStyle:
-                      TextStyle(color: Color.fromARGB(255, 167, 202, 231)),
+                  hintStyle: TextStyle(color: Colors.white),
                   prefixIcon: Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
@@ -186,79 +193,16 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             ),
             SizedBox(height: height * .02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Checkbox(
-                  value: _isVendor,
-                  onChanged: (value) {
-                    setState(() {
-                      _isVendor = value!;
-                      if (_isVendor) {
-                        _isUser = false;
-                      }
-                    });
-                  },
-                ),
-                Text(
-                  ' vendor',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                SizedBox(width: 20),
-                Checkbox(
-                  value: _isUser,
-                  onChanged: (value) {
-                    setState(() {
-                      _isUser = value!;
-                      if (_isUser) {
-                        _isVendor = false;
-                      }
-                    });
-                  },
-                ),
-                Text(
-                  ' user',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ],
-            ),
-            if (_isVendor)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: CustomTextField(
-                  icon: Icons.branding_watermark,
-                  hint: 'Enter your brand name',
-                ),
-              ),
-            SizedBox(height: height * .02),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 120),
               child: Builder(
-                builder: (context) => TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                      Colors.black,
-                    ),
-                  ),
+                builder: (context) => OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                      backgroundColor: kSecondaryColor,
+                      side: BorderSide(color: Colors.white)),
                   onPressed: () {
                     if (_globalKey.currentState!.validate()) {
-                      if (_isVendor) {
-                        // Add your vendor signup logic here
-                      } else if (_isUser) {
-                        Navigator.pushNamed(context, UserHome.id);
-                      } else {
-                        // Show error message if no option is selected
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Please select an option'),
-                          ),
-                        );
-                      }
+                      Navigator.pushNamed(context, UserHome.id);
                     }
                   },
                   child: Text(
@@ -283,7 +227,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Text(
                     ' Login',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.grey,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
