@@ -1,3 +1,4 @@
+import 'package:fikra_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fikra_app/screens/login_screen.dart';
 import 'package:fikra_app/constant.dart';
@@ -37,7 +38,7 @@ class FirstScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 50),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
                   backgroundColor: kSecondaryColor,
@@ -46,7 +47,7 @@ class FirstScreen extends StatelessWidget {
                 Navigator.pushNamed(context, LoginScreen.id);
               },
               child: Text(
-                '      Vendor      ',
+                '      login     ',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
@@ -57,12 +58,27 @@ class FirstScreen extends StatelessWidget {
                 side: BorderSide(color: Colors.white),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, UserHome.id);
+                Navigator.pushNamed(context, SignupScreen.id);
               },
               child: Text(
-                '       User       ',
+                '    signup    ',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
+            ),
+            SizedBox(height: 60),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, UserHome.id);
+                  },
+                  child: const Text(
+                    'Skip',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
